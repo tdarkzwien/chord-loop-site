@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Returning to Chord Loop</title>
+<!--
+  Planning Center sends every Chord Loop sign-in back to this page, and this
+  page immediately hands it to the copy of the app that started it.
+
+  It exists so that one permanent address can be registered with Planning
+  Center. The app's own address contains a local network address while it is
+  being developed and changes whenever the network does; this one never
+  changes.
+
+  It stores nothing, sends nothing anywhere, has no analytics and no cookies.
+  The sign-in code it passes along is useless to anyone else: it is bound by
+  PKCE to a secret that never left the phone that started the sign-in.
+
+  It will only ever forward to chordloop:// or exp://, never to another
+  website, so it cannot be used to bounce anyone somewhere they did not ask
+  to go.
+-->
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 28px;
+    background: #08080a; color: #f4f4f6;
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    text-align: center;
+  }
+  .box { max-width: 30rem; }
+  h1 { font-size: 1.35rem; letter-spacing: .01em; margin: 0 0 .6rem; }
+  p { color: #a8a8b3; margin: 0 0 1rem; }
+  a.button {
+    display: inline-block; margin-top: .4rem; padding: 14px 26px;
+    border-radius: 12px; background: #d8b24a; color: #101014;
+    font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    text-decoration: none; font-size: .88rem;
+  }
+  code {
+    display: block; margin-top: 1.4rem; padding: 12px 14px;
+    border: 1px solid #2a2a31; border-radius: 10px;
+    background: #101014; color: #d8b24a;
+    font-size: .8rem; word-break: break-all; text-align: left;
+  }
+  .quiet { font-size: .82rem; color: #6f6f7a; margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="head">Returning to Chord Loop…</h1>
+  <p id="note">Signed in. Sending you back to the app.</p>
+  <div id="manual" hidden>
+    <a class="button" id="link" href="#">Open Chord Loop</a>
+  </div>
+  <p class="quiet" id="quiet">This page keeps nothing and shows nothing to anyone else.</p>
+</div>
+
+<script>
+(function () {
+  var head = document.getElementById('head');
+  var note = document.getElementById('note');
+  var manual = document.getElementById('manual');
+  var link = document.getElementById('link');
+
+  function stop(title, message) {
+    head.textContent = title;
+    note.textContent = message;
+  }
+
+  var q = new URLSearchParams(window.location.search);
+  var error = q.get('error');
+  var code = q.get('code');
+  var state = q.get('state') || '';
+
+  if (error) {
+    stop(
+      error === 'access_denied' ? 'Not connected' : 'Sign-in error',
+      error === 'access_denied'
+        ? 'Planning Center access was not granted. You can close this page and try again from the app.'
+        : 'Planning Center reported: ' + error + '. You can close this page and try again from the app.'
+    );
+    return;
+  }
+
+  if (!code) {
+    stop('Nothing to do here', 'This page only has a job when Planning Center sends a sign-in to it.');
+    return;
+  }
+
+  // The app put its own address inside the state, base64url encoded, and
+  // Planning Center returned it untouched.
+  var target = null;
+  try {
+    var padded = state.replace(/-/g, '+').replace(/_/g, '/');
+    while (padded.length % 4) padded += '=';
+    var decoded = decodeURIComponent(escape(atob(padded)));
+    target = JSON.parse(decoded).r;
+  } catch (e) {
+    target = null;
+  }
+
+  // Only ever hand off to the app itself.
+  if (typeof target !== 'string' || !/^(chordloop:|exp:|exps:)/.test(target)) {
+    stop(
+      'Could not return to the app',
+      'This sign-in did not say which copy of Chord Loop it came from. Close this page and start the sign-in again from the app.'
+    );
+    return;
+  }
+
+  var handoff =
+    target +
+    (target.indexOf('?') === -1 ? '?' : '&') +
+    'code=' + encodeURIComponent(code) +
+    '&state=' + encodeURIComponent(state);
+
+  link.href = handoff;
+  window.location.replace(handoff);
+
+  // If the phone did not switch apps on its own, offer the tap.
+  window.setTimeout(function () {
+    head.textContent = 'Almost there';
+    note.textContent = 'Tap below to finish signing in.';
+    manual.hidden = false;
+  }, 1200);
+})();
+</script>
+</body>
+</html>
