@@ -30,6 +30,9 @@
   .beat { color:var(--dim); text-align:center; font-size:13px; letter-spacing:.3em; margin-bottom:8px; }
   footer { border-top:1px solid var(--line); margin-top:56px; padding-top:22px;
     color:var(--dim); font-size:14px; }
+  .mail { color:var(--gold); border:1px dashed var(--line); border-radius:8px;
+    padding:2px 10px; cursor:pointer; display:inline-block; font-size:15px; }
+  .mail:hover { border-style:solid; }
 </style>
 </head>
 <body>
@@ -75,10 +78,33 @@
 
   <h2>Support</h2>
   <p>Questions, bugs, or a chart it read wrong:
-  <a href="mailto:zwiener@protonmail.com">zwiener@protonmail.com</a></p>
+  <span class="mail" data-mail>Show the support address</span></p>
 
   <footer>Chord Loop is an independent practice tool. It is not affiliated with or endorsed by
   Planning Center.</footer>
 </div>
+
+<script>
+  // The support address is assembled in the browser, so it is not sitting in
+  // the page source for address-harvesting bots to lift.
+  (function () {
+    var parts = ['endpZW5lckBwcm90b25tYWlsLmNvbQ=='];
+    function reveal(host) {
+      var addr = atob(parts[0]);
+      var a = document.createElement('a');
+      a.href = 'mailto:' + addr;
+      a.textContent = addr;
+      host.replaceWith(a);
+    }
+    document.querySelectorAll('[data-mail]').forEach(function (btn) {
+      btn.addEventListener('click', function () { reveal(btn); });
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('tabindex', '0');
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(btn); }
+      });
+    });
+  })();
+</script>
 </body>
 </html>
