@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chord Loop — four chords, tempo, play</title>
+<meta name="description" content="Chord Loop turns a chord progression into a looping practice track. Connects to Planning Center Services read-only to practice Sunday's songs in the assigned key.">
+<style>
+  :root { --bg:#0B0E12; --card:#12161C; --line:#232B35; --text:#EEF2F6; --dim:#8D9AA8; --gold:#E8B14C; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:680px; margin:0 auto; padding:64px 24px 96px; }
+  .kicker { color:var(--gold); letter-spacing:.22em; text-transform:uppercase;
+    font-size:12px; font-weight:700; margin:0 0 14px; }
+  h1 { font-size:clamp(34px,7vw,52px); line-height:1.1; margin:0 0 18px; letter-spacing:-.02em; }
+  .lede { font-size:19px; color:var(--dim); margin:0 0 44px; }
+  h2 { font-size:20px; margin:44px 0 12px; letter-spacing:-.01em; }
+  p { margin:0 0 14px; }
+  ul { margin:0 0 14px; padding-left:22px; color:var(--dim); }
+  li { margin-bottom:8px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:22px 24px; margin:28px 0; }
+  .card h2 { margin-top:0; }
+  a { color:var(--gold); }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:32px 0 8px; }
+  .chord { background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:26px 0; text-align:center; font-size:30px; font-weight:700; letter-spacing:.02em; }
+  .beat { color:var(--dim); text-align:center; font-size:13px; letter-spacing:.3em; margin-bottom:8px; }
+  footer { border-top:1px solid var(--line); margin-top:56px; padding-top:22px;
+    color:var(--dim); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Chord Loop</p>
+  <h1>Four chords. Tempo. Play.</h1>
+  <p class="lede">A practice loop for musicians. Type in a progression, set a tempo, and it plays
+  in time, over and over, until the changes are under your fingers. No account, no song library,
+  nothing to set up.</p>
+
+  <div class="beat">&#9679; &#9675; &#9675; &#9675;</div>
+  <div class="grid">
+    <div class="chord">D</div><div class="chord">G</div>
+    <div class="chord">Bm</div><div class="chord">A</div>
+  </div>
+
+  <h2>What it does</h2>
+  <ul>
+    <li>Loops a progression at an exact tempo, with a count-in and a metronome.</li>
+    <li>Shows the current chord and the next one, with beat dots.</li>
+    <li>Reads a chart you photograph or paste, and turns each verse, chorus and bridge into its own loop.</li>
+    <li>Connects to Planning Center Services so you can practice the songs you are scheduled for, in the key they are assigned in.</li>
+  </ul>
+
+  <div class="card">
+    <h2>Connecting Planning Center</h2>
+    <p>Chord Loop asks Planning Center for <strong>read-only</strong> access to Services, and
+    nothing else. Your password is typed on Planning Center's own sign-in page and is never seen
+    by this app.</p>
+    <p>You can switch that access off at any time from your own Planning Center account, under
+    Authorized Apps. Chord Loop cannot change anything in your church's Planning Center account.</p>
+  </div>
+
+  <div class="card">
+    <h2>Privacy</h2>
+    <p>Chord Loop has no user accounts and no server of its own. Your schedule and your charts go
+    straight from Planning Center to your device. They are not sent anywhere else and they are not
+    stored by us, because there is no "us" in the path to store them.</p>
+    <p>When it reads a chart you photograph, it keeps the chords, the bar counts and the section
+    shape. It deliberately does not read or keep song titles, artist names or lyrics, and the
+    photograph never leaves your device.</p>
+  </div>
+
+  <h2>Support</h2>
+  <p>Questions, bugs, or a chart it read wrong:
+  <a href="mailto:zwiener@protonmail.com">zwiener@protonmail.com</a></p>
+
+  <footer>Chord Loop is an independent practice tool. It is not affiliated with or endorsed by
+  Planning Center.</footer>
+</div>
+</body>
+</html>
